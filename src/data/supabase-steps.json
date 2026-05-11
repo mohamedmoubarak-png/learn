@@ -1,0 +1,71 @@
+[
+  {
+    "id": "supabase-1",
+    "title": "إنشاء حساب ومشروع",
+    "image": "/screenshots/supabase/01-supabase-signup.png",
+    "description": ["افتح supabase.com.", "اضغط Start your project.", "أنشئ مشروعاً جديداً."],
+    "code": "npm install @supabase/supabase-js"
+  },
+  {
+    "id": "supabase-2",
+    "title": "لوحة التحكم",
+    "image": "/screenshots/supabase/02-supabase-dashboard.png",
+    "description": ["Table Editor للجداول.", "SQL Editor للاستعلامات.", "API Docs للتوثيق التلقائي."]
+  },
+  {
+    "id": "supabase-3",
+    "title": "إنشاء أول جدول",
+    "image": "/screenshots/supabase/03-supabase-create-table.png",
+    "description": ["أنشئ جدول users.", "أضف id وname وemail.", "اجعل xp يبدأ من 50."],
+    "code": "create table users (\n  id uuid primary key default gen_random_uuid(),\n  name text not null,\n  email text unique not null,\n  xp int default 50\n);"
+  },
+  {
+    "id": "supabase-4",
+    "title": "تفعيل RLS",
+    "image": "/screenshots/supabase/04-supabase-rls-policy.png",
+    "description": ["فعّل Row Level Security.", "اسمح لكل مستخدم ببياناته فقط.", "اختبر السياسة قبل النشر."],
+    "code": "create policy \"Users can read own data\"\non users for select\nusing (auth.uid() = id);"
+  },
+  {
+    "id": "supabase-5",
+    "title": "ربط React",
+    "image": "/screenshots/supabase/05-supabase-api-keys.png",
+    "description": ["انسخ Project URL.", "انسخ anon key.", "ضعهما في ملف env."],
+    "code": "export const supabase = createClient(\n  import.meta.env.VITE_SUPABASE_URL,\n  import.meta.env.VITE_SUPABASE_ANON_KEY\n)"
+  },
+  {
+    "id": "supabase-6",
+    "title": "عمليات CRUD",
+    "image": "/screenshots/supabase/06-supabase-crud-example.png",
+    "description": ["اقرأ التحديات.", "حدّث XP.", "لا تكشف مفاتيح سرية."],
+    "code": "const { data } = await supabase\n  .from('challenges')\n  .select('*')\n  .order('order_index')"
+  },
+  {
+    "id": "supabase-7",
+    "title": "Authentication",
+    "image": "/screenshots/supabase/07-supabase-auth-providers.png",
+    "description": ["فعّل Email أو Google.", "استخدم Supabase Auth.", "لا تخزن كلمات المرور."],
+    "code": "await supabase.auth.signInWithPassword({ email, password })"
+  },
+  {
+    "id": "supabase-8",
+    "title": "Realtime",
+    "image": "/screenshots/supabase/08-supabase-realtime.png",
+    "description": ["فعّل Realtime.", "استمع لتغيّر users.", "حدّث لوحة المتصدرين فوراً."],
+    "code": "supabase.channel('leaderboard').on('postgres_changes', {\n  event: '*', schema: 'public', table: 'users'\n}, handleChange).subscribe()"
+  },
+  {
+    "id": "supabase-9",
+    "title": "Storage",
+    "image": "/screenshots/supabase/09-supabase-storage.png",
+    "description": ["أنشئ bucket باسم avatars.", "ارفع صورة المستخدم.", "استخدم public URL بحذر."],
+    "code": "await supabase.storage\n  .from('avatars')\n  .upload(`${userId}/avatar.png`, file)"
+  },
+  {
+    "id": "supabase-10",
+    "title": "Edge Functions",
+    "image": "/screenshots/supabase/10-supabase-edge-functions.png",
+    "description": ["اكتب دالة تحقق.", "انشرها بأمر واحد.", "اترك الأسرار في البيئة."],
+    "code": "supabase functions deploy validate-challenge"
+  }
+]

@@ -1,0 +1,49 @@
+@import "tailwindcss";
+
+:root {
+  color: #0f172a;
+  background: #f7fbff;
+  font-family: "Cairo", "Tajawal", system-ui, sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  direction: rtl;
+  min-width: 320px;
+  background: #f7fbff;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  overflow-x: hidden;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+button {
+  touch-action: manipulation;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+.grid-bg {
+  background-image:
+    linear-gradient(rgba(56, 189, 248, 0.16) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(251, 113, 133, 0.12) 1px, transparent 1px);
+  background-size: 42px 42px;
+}

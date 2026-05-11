@@ -1,0 +1,71 @@
+[
+  {
+    "id": "firebase-1",
+    "title": "إنشاء مشروع Firebase",
+    "image": "/screenshots/firebase/01-firebase-create-project.png",
+    "description": ["افتح Firebase Console.", "اضغط Add project.", "اختر اسماً واضحاً."],
+    "code": "npm install firebase"
+  },
+  {
+    "id": "firebase-2",
+    "title": "لوحة التحكم",
+    "image": "/screenshots/firebase/02-firebase-console.png",
+    "description": ["Authentication للدخول.", "Firestore للبيانات.", "Hosting للنشر."]
+  },
+  {
+    "id": "firebase-3",
+    "title": "تفعيل Firestore",
+    "image": "/screenshots/firebase/03-firebase-firestore-create.png",
+    "description": ["اختر Production Mode.", "اضبط القواعد يدوياً.", "ابدأ بمجموعة users."],
+    "code": "users/{userId}/progress/{challengeId}"
+  },
+  {
+    "id": "firebase-4",
+    "title": "هيكل المستندات",
+    "image": "/screenshots/firebase/04-firebase-firestore-structure.png",
+    "description": ["Collection ثم Document.", "progress كمجموعة فرعية.", "لا تكرر البيانات بلا داع."],
+    "code": "users -> userId -> progress -> challengeId"
+  },
+  {
+    "id": "firebase-5",
+    "title": "قواعد الأمان",
+    "image": "/screenshots/firebase/05-firebase-security-rules.png",
+    "description": ["المستخدم يقرأ بياناته فقط.", "التحديات قراءة للمسجلين.", "الكتابة محمية."],
+    "code": "allow read, write: if request.auth.uid == userId;"
+  },
+  {
+    "id": "firebase-6",
+    "title": "ربط React",
+    "image": "/screenshots/firebase/06-firebase-config-keys.png",
+    "description": ["انسخ firebaseConfig.", "ضع القيم في env.", "لا تنشر مفاتيح خاصة."],
+    "code": "const app = initializeApp(firebaseConfig)\nexport const db = getFirestore(app)"
+  },
+  {
+    "id": "firebase-7",
+    "title": "CRUD",
+    "image": "/screenshots/firebase/07-firebase-firestore-data.png",
+    "description": ["استخدم getDoc للقراءة.", "setDoc للإنشاء.", "updateDoc للتعديل."],
+    "code": "await setDoc(doc(db, 'users', userId), { xp: 50 })"
+  },
+  {
+    "id": "firebase-8",
+    "title": "Authentication",
+    "image": "/screenshots/firebase/08-firebase-auth-providers.png",
+    "description": ["فعّل Email أو Google.", "استخدم Auth الرسمي.", "لا تلمس كلمة المرور."],
+    "code": "await signInWithEmailAndPassword(auth, email, password)"
+  },
+  {
+    "id": "firebase-9",
+    "title": "Realtime Listeners",
+    "image": "/screenshots/firebase/09-firebase-realtime-listener.png",
+    "description": ["استخدم onSnapshot.", "حدّث الواجهة فوراً.", "أوقف listener عند الخروج."],
+    "code": "const stop = onSnapshot(doc(db, 'users', userId), handleSnap)"
+  },
+  {
+    "id": "firebase-10",
+    "title": "Cloud Functions",
+    "image": "/screenshots/firebase/10-firebase-cloud-functions.png",
+    "description": ["اكتب وظيفة validate.", "اربطها بالمصادقة.", "انشرها عبر CLI."],
+    "code": "firebase deploy --only functions"
+  }
+]
