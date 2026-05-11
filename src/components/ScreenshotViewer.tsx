@@ -9,6 +9,9 @@ interface ScreenshotViewerProps {
 
 const ScreenshotViewer = ({ image, title }: ScreenshotViewerProps) => {
   const [isOpen, setIsOpen] = useState(false)
+  const imageSrc = image.startsWith('/')
+    ? `${import.meta.env.BASE_URL}${image.slice(1)}`
+    : image
 
   return (
     <>
@@ -19,7 +22,7 @@ const ScreenshotViewer = ({ image, title }: ScreenshotViewerProps) => {
       >
         <img
           className="h-full w-full object-cover transition group-hover:scale-[1.02]"
-          src={image}
+          src={imageSrc}
           alt={title}
         />
       </button>
@@ -44,7 +47,7 @@ const ScreenshotViewer = ({ image, title }: ScreenshotViewerProps) => {
                 <Image className="h-5 w-5 text-sky-500" />
                 <h3 className="text-lg font-black">{title}</h3>
               </div>
-              <img className="max-h-[78vh] w-full rounded-2xl object-contain" src={image} alt={title} />
+              <img className="max-h-[78vh] w-full rounded-2xl object-contain" src={imageSrc} alt={title} />
             </div>
           </motion.div>
         ) : null}
