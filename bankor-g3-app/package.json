@@ -1,0 +1,31 @@
+{
+  "name": "bankor-smart-planner",
+  "version": "0.8.0",
+  "private": true,
+  "main": "node_modules/expo/AppEntry.js",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "check": "tsc --noEmit",
+    "test:planner": "tsc src/planner.ts src/schedule.ts --outDir tests/compiled --target ES2020 --module commonjs --lib es2020,dom --skipLibCheck && node tests/planner.test.cjs && node tests/schedule.test.cjs",
+    "test": "npm run test:compile && node tests/planner.test.cjs && node tests/schedule.test.cjs && node tests/quiz.test.cjs && node tests/journey.test.cjs && node tests/review.test.cjs && node tests/quizSession.test.cjs && node tests/activity.test.cjs && node scripts/audit-content.cjs && node scripts/check-syntax.cjs",
+    "test:compile": "tsc --target es2020 --module commonjs --skipLibCheck --outDir tests/compiled src/schedule.ts src/planner.ts src/quiz.ts src/journey.ts src/review.ts src/quizSession.ts src/activity.ts",
+    "preview:apk": "eas build --platform android --profile preview",
+    "release:aab": "eas build --platform android --profile production",
+    "audit": "node scripts/audit-content.cjs"
+  },
+  "dependencies": {
+    "expo": "~58.0.0",
+    "react": "19.3.0",
+    "react-native": "0.88.0",
+    "expo-notifications": "~58.1.6",
+    "@react-native-async-storage/async-storage": "^2.2.0",
+    "expo-status-bar": "~58.0.4",
+    "expo-awesome-app-icon": "^2.2.1"
+  },
+  "devDependencies": {
+    "typescript": "~5.9.0",
+    "@types/react": "~19.2.0",
+    "babel-preset-expo": "~58.0.0"
+  }
+}

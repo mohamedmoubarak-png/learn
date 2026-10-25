@@ -1,0 +1,56 @@
+name: Build Bankor Android APK
+
+on:
+  push:
+    branches: [ccr-e3892df2-x4zfvs]
+    paths: ['bankor-g3-app/**', '.github/workflows/bankor-apk.yml']
+  workflow_dispatch:
+
+jobs:
+  android-debug-apk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 65
+    permissions:
+      contents: read
+    defaults:
+      run:
+        working-directory: bankor-g3-app
+    env:
+      CI: '1'
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - uses: android-actions/setup-android@v3
+
+      - name: Install npm dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Validate Bankor data and engines
+        run: npm test
+
+      - name: TypeScript check
+        run: npm run check
+
+      - name: Generate native Android project
+        run: npx expo prebuild --platform android
+
+      - name: Build installable APK
+        working-directory: bankor-g3-app/android
+        run: ./gradlew assembleRelease --no-daemon
+
+      - name: Upload Bankor APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: bankor-g3-v0.8-apk
+          path: bankor-g3-app/android/app/build/outputs/apk/release/app-release.apk
+          if-no-files-found: error
+          retention-days: 14

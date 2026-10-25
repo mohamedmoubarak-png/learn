@@ -1,0 +1,25 @@
+const assert=require('node:assert/strict');
+const {updateReviewCards,dueReviewIds,reviewSummary,nextReviewDates}=require('./compiled/review');
+const {recordAttempt,emptyQuizProgress}=require('./compiled/quiz');
+const DAY='2026-10-25';
+const correct=[{id:'q1',correct:true}],wrong=[{id:'q2',correct:false}];
+let cards=updateReviewCards({},[...correct,...wrong],DAY);
+assert.equal(cards.q1.due,'2026-10-26');assert.equal(cards.q2.due,DAY);
+assert.deepEqual(dueReviewIds(cards,[],DAY),['q2']);
+cards=updateReviewCards(cards,correct,'2026-10-26');assert.equal(cards.q1.due,'2026-10-29');
+cards=updateReviewCards(cards,correct,'2026-10-29');assert.equal(cards.q1.due,'2026-11-05');
+cards=updateReviewCards(cards,wrong,'2026-10-29');assert.equal(cards.q2.lapses,2);
+assert.equal(cards.q2.successes,0);assert.equal(cards.q2.due,'2026-10-29');
+assert.deepEqual(dueReviewIds({},['oldError'],'2026-10-25'),['oldError']);
+// A previously incorrect answer that is now scheduled tomorrow must not be marked due forever.
+assert.deepEqual(dueReviewIds({q1:{due:'2026-10-26',intervalDays:1,successes:1,lapses:2,lastReviewed:DAY}},['q1'],DAY),[]);
+assert.equal(reviewSummary(cards,['oldError'],'2026-10-29').due,2);
+assert.deepEqual(nextReviewDates(cards,'2026-10-29'),['2026-10-29','2026-11-05']);
+const q={id:'q3',topic:'x',g:'t',q:'test',o:['a','b'],a:0};
+let progress=emptyQuizProgress();
+let attempt=recordAttempt(progress,[q],{q3:1},'quick',50,new Date('2026-10-25T12:00:00'));
+assert.equal(attempt.progress.reviewCards.q3.due,DAY);
+attempt=recordAttempt(attempt.progress,[q],{q3:0},'review',50,new Date('2026-10-25T12:15:00'));
+assert.equal(attempt.progress.reviewCards.q3.due,'2026-10-26');
+assert.equal(attempt.progress.reviewCards.q3.lapses,1);
+console.log('PASS — spaced review due today, 1/3/7 cadence, reset on wrong, legacy migration, quiz integration');

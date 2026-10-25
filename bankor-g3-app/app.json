@@ -1,0 +1,55 @@
+{
+  "expo": {
+    "name": "Bankor | Banker G3 Academy",
+    "slug": "bankor-g3",
+    "version": "0.8.0",
+    "orientation": "portrait",
+    "scheme": "bankor",
+    "userInterfaceStyle": "light",
+    "icon": "./assets/bankor-icon.png",
+    "android": {
+      "package": "com.msm.bankorg3",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/bankor-icon.png",
+        "backgroundColor": "#102754"
+      }
+    },
+    "plugins": [
+      "expo-notifications",
+      [
+        "expo-awesome-app-icon",
+        {
+          "icons": {
+            "celebrate": {
+              "ios": {
+                "light": "./assets/bankor-icon.png"
+              },
+              "android": {
+                "image": "./assets/bankor-icon.png"
+              }
+            },
+            "worried": {
+              "ios": {
+                "light": "./assets/worried.png"
+              },
+              "android": {
+                "image": "./assets/worried.png"
+              }
+            },
+            "sad": {
+              "ios": {
+                "light": "./assets/sad.png"
+              },
+              "android": {
+                "image": "./assets/sad.png"
+              }
+            }
+          }
+        }
+      ]
+    ],
+    "extra": {
+      "feature": "quiz-idempotency-activity-streak-android-ci-and-content-audit"
+    }
+  }
+}

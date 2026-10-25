@@ -1,0 +1,17 @@
+const assert=require('node:assert/strict');
+const {parseStudyRanges,formatStudyRanges,vacationBlocks}=require('./compiled/schedule.js');
+const {forecast,freshState,blocksForDay}=require('./compiled/planner.js');
+const lessons=require('../data/lessons.json');
+assert.equal(parseStudyRanges('09:00-11:00, 13:00-15:00, 19:00-21:00').reduce((s,v)=>s+v.minutes,0),360);
+assert.throws(()=>parseStudyRanges('10:00-13:00, 12:00-14:00'));
+assert.throws(()=>parseStudyRanges('23:00-01:00'));
+assert.equal(formatStudyRanges(vacationBlocks(6)),'09:00-11:00, 13:00-15:00, 18:00-20:00');
+const cfg={deadline:'2026-10-30',examDate:'2026-10-31',weekdayMinutes:60,weekendMinutes:60,daysOff:[],reminderHour:20,reminderMinute:0,wpm:75,dayOverrides:{'2026-10-25':vacationBlocks(8)}};
+assert.equal(blocksForDay('2026-10-25',cfg).reduce((s,v)=>s+v.minutes,0),480);
+const a=forecast(lessons,freshState(),cfg,new Date(2026,9,25));
+const b=forecast(lessons,freshState(),{...cfg,deadline:'2026-11-30'},new Date(2026,9,25));
+assert.ok(b.capacityMinutes>a.capacityMinutes);
+console.log('PASS — flexible hours, holiday override, overlap validation, adaptive dates');
+const {effectiveCapacity}=require('./compiled/planner.js');
+assert.equal(effectiveCapacity('2026-10-25',{...cfg,dayOverrides:{'2026-10-25':[{start:'09:00',minutes:120},{start:'13:00',minutes:120}]}},new Date(2026,9,25,14)),60);
+assert.equal(effectiveCapacity('2026-10-25',{...cfg,dayOverrides:{'2026-10-25':[{start:'09:00',minutes:120}]}},new Date(2026,9,25,21)),0);
